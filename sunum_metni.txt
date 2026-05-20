@@ -1,0 +1,31 @@
+
+Kısa Sunum Metni
+
+Proje adı:
+Sepet Hafızası: Kişisel Alışveriş ve Fiyat Değişimi Takip Agent'ı
+
+Problem:
+Kullanıcılar market alışverişlerini düzenli şekilde kaydetmediği için ürünlerin geçmiş fiyatlarını ve aylık harcamalarını takip etmekte zorlanır.
+
+Çözüm:
+Sepet Hafızası, alışveriş kayıtlarını veritabanında saklayan ve bu veriler üzerinden fiyat değişimi analizi yapan bir agent uygulamasıdır.
+
+Agent mantığı:
+Kullanıcı tek bir prompt içinde birden fazla ürün yazabilir. Örneğin:
+"Bugün BIM'den 2 kg domates 130 TL, 1 lt süt 42 TL, 3 paket makarna 75 TL aldım."
+
+Sistem bu metni fiyatlara göre ayrıştırır. Her ürün için ürün adı, miktar, birim, toplam fiyat ve market bilgisi çıkarılır. Daha sonra her ürün ayrı kayıt olarak SQLite veritabanına eklenir.
+
+Veritabanı:
+Kayıtlarda tarih, ürün adı, kategori, miktar, birim, birim fiyat, toplam fiyat, market ve not bilgisi tutulur.
+
+Grafikler:
+Uygulamada aylık toplam harcama, günlük harcama, kategoriye göre harcama, markete göre harcama ve en çok harcama yapılan ürünler grafik olarak gösterilir.
+
+Fiyat değişimi:
+Aynı ürünün eski ve yeni birim fiyatı karşılaştırılır.
+Formül:
+((Yeni fiyat - Eski fiyat) / Eski fiyat) * 100
+
+Sonuç:
+Bu sistem kullanıcının kişisel alışveriş sepeti üzerinden fiyat değişimini ve harcama alışkanlıklarını takip etmesini sağlar.
