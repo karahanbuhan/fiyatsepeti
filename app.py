@@ -7,8 +7,9 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+import altair as alt
 
-DB_PATH = Path("sepet_hafizasi.db")
+DB_PATH = Path("fiyatsepeti.db")
 
 CATEGORIES = [
     "Gıda", "Temizlik", "Kişisel Bakım", "Elektronik", "Ev", "Ulaşım", "Diğer"
@@ -21,6 +22,15 @@ MARKET_WORDS = [
     "file", "metro", "gratis", "rossmann", "trendyol", "hepsiburada"
 ]
 
+COLOR_PALETTE = [
+    "#2E7D32",  # yeşil
+    "#1976D2",  # mavi
+    "#F57C00",  # turuncu
+    "#7B1FA2",  # mor
+    "#C2185B",  # pembe/kırmızı
+    "#0097A7",  # camgöbeği
+    "#FBC02D",  # sarı
+]
 
 def get_conn():
     return sqlite3.connect(DB_PATH, check_same_thread=False)
@@ -374,17 +384,17 @@ def seed_demo_data():
         add_purchase(*row)
 
 
-st.set_page_config(page_title="Sepet Hafızası", page_icon="🛒", layout="wide")
+st.set_page_config(page_title="FiyatSepeti", page_icon="🛒", layout="wide")
 init_db()
 
-st.title("🛒 Sepet Hafızası")
+st.title("🛒 FiyatSepeti")
 st.caption("Kişisel alışveriş kayıtlarını tutan, Excel gibi listeleyen ve fiyat değişimlerini analiz eden agent.")
 
 with st.sidebar:
     st.header("Proje")
-    st.write("**Sepet Hafızası: Kişisel Alışveriş ve Fiyat Değişimi Takip Agent'ı**")
+    st.write("**FiyatSepeti: Kişisel Alışveriş ve Fiyat Değişimi Takip Agent'ı**")
     st.write("Teknoloji: Python + SQLite + Streamlit")
-    st.write("Veritabanı: `sepet_hafizasi.db`")
+    st.write("Veritabanı: `fiyatsepeti.db`")
     if st.button("Demo verisi ekle"):
         seed_demo_data()
         st.success("Demo verileri eklendi.")
@@ -519,23 +529,83 @@ with tab_dashboard:
                 st.markdown("#### Kategoriye göre harcama")
                 by_category = filtered.groupby("category", as_index=False)["total_price"].sum()
                 by_category = by_category.sort_values("total_price", ascending=False)
-                by_category = by_category.rename(columns={"category": "Kategori", "total_price": "Toplam Harcama"})
+                by_category = by_category.rename(columns={
+                    "category": "Kategori",
+                    "total_price": "Toplam Harcama"
+                })
                 st.bar_chart(by_category, x="Kategori", y="Toplam Harcama", use_container_width=True)
+
+                category_chart = (
+                alt.Chart(by_category)
+                .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                .encode(
+                    x=alt.X("Kategori:N", sort="-y"),
+                    y=alt.Y("Toplam Harcama:Q"),
+                    color=alt.Color(
+                        "Kategori:N",
+                        scale=alt.Scale(range=COLOR_PALETTE),
+                        legend=None
+                    ),
+                    tooltip=["Kategori", "Toplam Harcama"]
+                ))
+
+                st.altair_chart(category_chart, use_container_width=True)
 
             with c4:
                 st.markdown("#### Markete göre harcama")
+
                 tmp = filtered.copy()
                 tmp["store"] = tmp["store"].replace("", "Bilinmiyor").fillna("Bilinmiyor")
+
                 by_store = tmp.groupby("store", as_index=False)["total_price"].sum()
                 by_store = by_store.sort_values("total_price", ascending=False)
-                by_store = by_store.rename(columns={"store": "Market", "total_price": "Toplam Harcama"})
-                st.bar_chart(by_store, x="Market", y="Toplam Harcama", use_container_width=True)
+                by_store = by_store.rename(columns={
+                    "store": "Market",
+                    "total_price": "Toplam Harcama"
+                })
+
+                store_chart = (
+                    alt.Chart(by_store)
+                    .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                    .encode(
+                        x=alt.X("Market:N", sort="-y"),
+                        y=alt.Y("Toplam Harcama:Q"),
+                        color=alt.Color(
+                            "Market:N",
+                            scale=alt.Scale(range=COLOR_PALETTE),
+                            legend=None
+                        ),
+                        tooltip=["Market", "Toplam Harcama"]
+                    )
+                )
+
+                st.altair_chart(store_chart, use_container_width=True)
 
             st.markdown("#### En çok harcama yapılan ürünler")
+
             top_items = filtered.groupby("item_name", as_index=False)["total_price"].sum()
             top_items = top_items.sort_values("total_price", ascending=False).head(10)
-            top_items = top_items.rename(columns={"item_name": "Ürün", "total_price": "Toplam Harcama"})
-            st.bar_chart(top_items, x="Ürün", y="Toplam Harcama", use_container_width=True)
+            top_items = top_items.rename(columns={
+                "item_name": "Ürün",
+                "total_price": "Toplam Harcama"
+            })
+
+            top_items_chart = (
+                alt.Chart(top_items)
+                .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                .encode(
+                    x=alt.X("Ürün:N", sort="-y"),
+                    y=alt.Y("Toplam Harcama:Q"),
+                    color=alt.Color(
+                        "Ürün:N",
+                        scale=alt.Scale(range=COLOR_PALETTE),
+                        legend=None
+                    ),
+                    tooltip=["Ürün", "Toplam Harcama"]
+                )
+            )
+
+            st.altair_chart(top_items_chart, use_container_width=True)
 
             st.markdown("#### Aylık özet tablo")
             monthly_table = filtered.groupby("month").agg(
@@ -575,14 +645,14 @@ with tab_records:
             st.download_button(
                 "CSV indir",
                 data=view.to_csv(index=False).encode("utf-8-sig"),
-                file_name="sepet_hafizasi_kayitlari.csv",
+                file_name="fiyatsepeti_kayitlari.csv",
                 mime="text/csv",
             )
         with c2:
             st.download_button(
                 "Excel indir",
                 data=to_excel_bytes(view),
-                file_name="sepet_hafizasi_kayitlari.xlsx",
+                file_name="fiyatsepeti_kayitlari.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
         with c3:

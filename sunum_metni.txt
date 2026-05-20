@@ -2,13 +2,13 @@
 Kısa Sunum Metni
 
 Proje adı:
-Sepet Hafızası: Kişisel Alışveriş ve Fiyat Değişimi Takip Agent'ı
+FiyatSepeti: Kişisel Alışveriş ve Fiyat Değişimi Takip Agent'ı
 
 Problem:
 Kullanıcılar market alışverişlerini düzenli şekilde kaydetmediği için ürünlerin geçmiş fiyatlarını ve aylık harcamalarını takip etmekte zorlanır.
 
 Çözüm:
-Sepet Hafızası, alışveriş kayıtlarını veritabanında saklayan ve bu veriler üzerinden fiyat değişimi analizi yapan bir agent uygulamasıdır.
+FiyatSepeti, alışveriş kayıtlarını veritabanında saklayan ve bu veriler üzerinden fiyat değişimi analizi yapan bir agent uygulamasıdır.
 
 Agent mantığı:
 Kullanıcı tek bir prompt içinde birden fazla ürün yazabilir. Örneğin:
