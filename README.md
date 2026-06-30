@@ -1,7 +1,7 @@
 
-# Sepet Hafızası
+# Fiyat Sepeti
 
-**Sepet Hafızası**, günlük alışveriş kayıtlarını veritabanında saklayan, tek prompttan birden fazla ürünü ayrıştırabilen, Excel benzeri tablo sunan ve kişisel fiyat değişimi/enflasyon takibi yapan bir agent uygulamasıdır.
+**Fiyat Sepeti**, günlük alışveriş kayıtlarını veritabanında saklayan, tek prompttan birden fazla ürünü ayrıştırabilen, Excel benzeri tablo sunan ve kişisel fiyat değişimi/enflasyon takibi yapan bir agent uygulamasıdır.
 
 ## Proje Başlığı
 
