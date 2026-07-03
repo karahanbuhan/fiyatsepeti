@@ -11,6 +11,13 @@
 
 Günlük market alışverişleri genellikle sistemli tutulmadığı için ürünlerin zaman içindeki fiyat değişimini görmek zorlaşır. Bu proje, kullanıcının alışveriş kayıtlarını düzenli biçimde saklar ve geçmiş fiyatlarla karşılaştırma yapar.
 
+## Ekran Görüntüleri
+
+<img width="1223" height="638" alt="Screenshot 2026-07-03 113303" src="https://github.com/user-attachments/assets/10728e63-67fa-4e13-aeb6-9b9edb5a276d" />
+<img width="1224" height="514" alt="2" src="https://github.com/user-attachments/assets/d4ec6de4-2b23-4327-bab3-95d478bfa2ea" />
+<img width="1217" height="627" alt="3" src="https://github.com/user-attachments/assets/b650cde4-04d7-4793-8bad-233b6942b153" />
+<img width="1239" height="638" alt="4" src="https://github.com/user-attachments/assets/36c8f14c-b2f5-443c-b1c3-b760a6591f2f" />
+
 ## Kullanılan Teknolojiler
 
 - Python
